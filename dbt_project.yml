@@ -1,0 +1,37 @@
+name: kep_warehouse
+version: 1.0.0
+config-version: 2
+profile: kep_warehouse
+
+model-paths: ["models"]
+test-paths: ["tests/dbt"]
+macro-paths: ["macros"]
+target-path: target
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  scope_start_date: "2023-10-01"
+  scope_end_date: "2023-12-31"
+  cbk_scope_start_date: "2023-10-01"
+  cbk_scope_end_date: "2023-12-31"
+  weather_expected_ranges: {}
+  cbk_expected_rows: 177
+  weather_expected_rows: 276
+  cbk_expected_monthly_rows: 9
+  weather_expected_monthly_rows: 9
+
+models:
+  kep_warehouse:
+    +persist_docs:
+      relation: true
+      columns: true
+    probe:
+      +tags: ["sandbox_probe"]
+    staging:
+      +materialized: view
+    dimensions:
+      +materialized: table
+    facts:
+      +materialized: table
+    marts:
+      +materialized: table

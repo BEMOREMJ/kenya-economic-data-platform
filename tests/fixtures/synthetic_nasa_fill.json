@@ -1,0 +1,22 @@
+{
+  "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [36.822, -1.292, 1642.2]},
+  "properties": {
+    "parameter": {
+      "T2M": {"20231001": 20.0, "20231002": -999.0},
+      "PRECTOTCORR": {"20231001": 1.5, "20231002": 0.0}
+    }
+  },
+  "header": {
+    "api": {"version": "synthetic", "name": "POWER Daily API"},
+    "sources": ["SYNTHETIC"],
+    "fill_value": -999.0,
+    "time_standard": "UTC",
+    "start": "20231001",
+    "end": "20231002"
+  },
+  "parameters": {
+    "T2M": {"units": "C", "longname": "Temperature at 2 Meters"},
+    "PRECTOTCORR": {"units": "mm/day", "longname": "Precipitation Corrected"}
+  }
+}

@@ -1,0 +1,53 @@
+# Non-secret example. Copy to config/settings.toml (ignored by Git) before use.
+
+[google_cloud]
+project_id = "YOUR_GCP_PROJECT"
+location = "US"
+candidate_dataset = "kep_candidate_v1"
+probe_dataset = "kep_sandbox_probe_v1"
+trusted_dataset = "kep_trusted_v1"
+default_table_expiration_days = 60
+
+[bounds]
+start_date = "2023-10-01"
+end_date = "2023-12-31"
+max_query_bytes = 1000000000
+max_local_download_bytes = 25000000
+
+[sources.cbk]
+currencies = ["US DOLLAR", "STG POUND", "EURO"]
+raw_path = "data/raw/phase_0/cbk_historical_retry.csv"
+source_url = "https://www.centralbank.go.ke/uploads/fx_rates/historical_data.csv"
+verified_sha256 = "eaea9637cf763ea61ebb81661ed6471f50f79051cc983dff9cac072d92d8c677"
+
+[sources.nasa_power]
+endpoint = "https://power.larc.nasa.gov/api/temporal/daily/point"
+community = "AG"
+time_standard = "UTC"
+parameters = ["T2M", "PRECTOTCORR"]
+missing_value = -999.0
+
+[[sources.nasa_power.locations]]
+name = "Nairobi"
+latitude = -1.2921
+longitude = 36.8219
+
+[[sources.nasa_power.locations]]
+name = "Mombasa"
+latitude = -4.0435
+longitude = 39.6682
+
+[[sources.nasa_power.locations]]
+name = "Kisumu"
+latitude = -0.0917
+longitude = 34.7680
+
+[http]
+connect_timeout_seconds = 10
+read_timeout_seconds = 30
+retry_after_cap_seconds = 10
+max_attempts = 3
+
+[extraction]
+max_window_days = 366
+

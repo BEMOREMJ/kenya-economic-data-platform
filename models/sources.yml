@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: candidate_landing
+    description: Immutable batch landing records derived from Phase 1 accepted artifacts.
+    database: "{{ env_var('KEP_GCP_PROJECT') }}"
+    schema: "{{ env_var('KEP_BQ_DATASET') }}"
+    tables:
+      - name: cbk_exchange_rates
+        identifier: "{{ env_var('KEP_CBK_TABLE') }}"
+        description: Selected immutable CBK batch at publication-date and currency grain.
+        columns:
+          - name: observation_date
+            data_tests: [not_null]
+          - name: currency_code
+            data_tests: [not_null]
+          - name: batch_id
+            data_tests: [not_null]
+      - name: nasa_weather
+        identifier: "{{ env_var('KEP_NASA_TABLE') }}"
+        description: Selected immutable NASA POWER batch at UTC date and representative-point grain.
+        columns:
+          - name: observation_date
+            data_tests: [not_null]
+          - name: location_name
+            data_tests: [not_null]
+          - name: batch_id
+            data_tests: [not_null]

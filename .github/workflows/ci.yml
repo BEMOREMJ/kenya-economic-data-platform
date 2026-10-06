@@ -1,0 +1,39 @@
+name: Code validation only
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-validation:
+    name: Offline behavioral and static validation
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      KEP_GCP_PROJECT: ci-no-cloud-project
+      KEP_BQ_DATASET: kep_ci_candidate
+      KEP_BQ_LOCATION: US
+      KEP_CBK_TABLE: landing_cbk_ci
+      KEP_NASA_TABLE: landing_nasa_ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Install frozen dependencies
+        run: uv sync --frozen --dev
+      - name: Prepare non-secret dbt parse profile
+        shell: pwsh
+        run: Copy-Item config/profiles.example.yml config/profiles.yml
+      - name: Compile Python
+        run: uv run python -m compileall -q src tests scripts
+      - name: Run offline behavioral tests
+        run: uv run pytest -q -p no:cacheprovider
+      - name: Parse dbt project without warehouse execution
+        run: uv run dbt parse --profiles-dir config --no-partial-parse
+
+      # This workflow validates code only. It has no cloud credentials and is
+      # not a source extractor, warehouse runner, scheduler, or publisher.

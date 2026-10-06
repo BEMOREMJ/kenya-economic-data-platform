@@ -1,0 +1,117 @@
+version: 2
+
+models:
+  - name: stg_exchange_rates
+    description: Typed CBK candidate view retaining source and immutable batch provenance.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [publication_date, currency_code]
+    columns:
+      - name: publication_date
+        data_tests: [not_null]
+      - name: currency_code
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [USD, GBP, EUR]
+      - name: mean_rate
+        data_tests: [not_null]
+      - name: batch_id
+        data_tests: [not_null]
+  - name: stg_weather
+    description: Typed NASA POWER candidate view at UTC date and representative point grain.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [observation_date, location_name]
+    columns:
+      - name: observation_date
+        data_tests: [not_null]
+      - name: location_name
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [Nairobi, Mombasa, Kisumu]
+      - name: mean_temperature_c
+        data_tests: [not_null]
+      - name: precipitation_mm_day
+        data_tests: [not_null]
+  - name: dim_date
+    description: Every calendar date in the bounded historical candidate scope.
+    columns:
+      - name: date_day
+        data_tests: [not_null, unique]
+      - name: month_start
+        data_tests: [not_null]
+  - name: dim_currency
+    description: Selected foreign currencies quoted as KES per one foreign unit.
+    columns:
+      - name: currency_code
+        data_tests: [not_null, unique]
+  - name: dim_location
+    description: Representative NASA POWER points; coordinates do not describe whole cities.
+    columns:
+      - name: location_id
+        data_tests: [not_null, unique]
+  - name: fact_exchange_rate_daily
+    description: CBK fact at publication date and currency grain; weekends/holidays are not fabricated.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [publication_date, currency_code]
+    columns:
+      - name: currency_code
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_currency')
+                field: currency_code
+      - name: publication_date
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+  - name: fact_weather_daily
+    description: NASA POWER fact at UTC observation date and representative grid point grain.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [observation_date, location_id]
+    columns:
+      - name: location_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_location')
+                field: location_id
+      - name: observation_date
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+  - name: mart_exchange_rate_monthly
+    description: Arithmetic mean of available published daily CBK mean rates by currency/month, with first/last publication dates and observation count.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [currency_code, month_start]
+  - name: mart_weather_monthly
+    description: Mean daily T2M and sum of complete daily PRECTOTCORR values by representative point/month, in C and mm respectively.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [location_id, month_start]
+    columns:
+      - name: sum_daily_precipitation_mm
+        data_tests: [not_null]
+      - name: missing_precipitation_day_count
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [0]
+                quote: false

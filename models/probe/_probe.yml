@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: probe_landing
+    database: "{{ env_var('KEP_GCP_PROJECT') }}"
+    schema: "{{ env_var('KEP_BQ_DATASET') }}"
+    tables:
+      - name: probe_input
+        description: Three-row synthetic Phase 2 batch-load probe.
+
+models:
+  - name: stg_probe
+    description: Typed view over the isolated synthetic batch-load probe.
+    columns:
+      - name: probe_id
+        data_tests: [not_null, unique]
+      - name: label
+        data_tests: [not_null]
+      - name: amount
+        data_tests: [not_null]
+  - name: probe_summary
+    description: Materialized table proving non-DML dbt table creation.
+    columns:
+      - name: probe_row_count
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [3]
+                quote: false

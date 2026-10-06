@@ -1,0 +1,50 @@
+# Python and uv
+.venv/
+.uv-cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest-tmp/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+config/settings.toml
+config/profiles.yml
+*.pem
+*.key
+*service-account*.json
+*credentials*.json
+application_default_credentials.json
+
+# Data, evidence downloads, logs, and temporary files
+data/raw/
+data/staging/
+data/processed/
+data/manifests/
+data/reports/
+logs/
+*.log
+tmp/
+temp/
+
+# dbt generated artifacts and local packages
+target/
+dbt_packages/
+packages-install-path/
+logs/dbt/
+.user.yml
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
