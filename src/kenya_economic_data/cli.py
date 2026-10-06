@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .config import Settings, load_settings
 from .dashboard import generate_results_dashboard
+from .public_dashboard import generate_public_weather_dashboard
 from .backfill import compose_backfill
 from .manifest import Manifest
 from .orchestration import export_release_reports, health_report, operate, rollback_release
@@ -83,6 +84,18 @@ def build_parser() -> argparse.ArgumentParser:
         "--output", type=Path,
         help="optional HTML destination; defaults inside the report directory",
     )
+    public_dashboard = subparsers.add_parser(
+        "render-public-dashboard",
+        help="render a standalone weather-only public dashboard",
+    )
+    public_dashboard.add_argument(
+        "--report-dir", type=Path, required=True,
+        help="release directory containing the trusted weather CSV and metadata",
+    )
+    public_dashboard.add_argument(
+        "--output", type=Path, default=Path("site/index.html"),
+        help="HTML destination; defaults to site/index.html",
+    )
     return parser
 
 
@@ -91,6 +104,12 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "render-dashboard":
             result = generate_results_dashboard(args.report_dir, output_path=args.output)
+            print(json.dumps(result, indent=2, sort_keys=True))
+            return 0
+        if args.command == "render-public-dashboard":
+            result = generate_public_weather_dashboard(
+                args.report_dir, output_path=args.output
+            )
             print(json.dumps(result, indent=2, sort_keys=True))
             return 0
         settings = load_settings(args.config)

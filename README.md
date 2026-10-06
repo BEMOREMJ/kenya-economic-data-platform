@@ -6,6 +6,13 @@ BigQuery with dbt, and publishes reproducible reporting outputs. It implements
 reliable ingestion, raw preservation, warehouse modelling, validation,
 orchestration, scoped backfills, recovery, and local reporting.
 
+![Weather-only historical reporting dashboard overview](docs/assets/dashboard-overview.png)
+
+The image is a historical reporting snapshot from the verified release. The
+public preview intentionally shows only NASA POWER weather results; the platform
+also implements a separate exchange-rate pipeline. A hosted dashboard link will
+be added only after GitHub Pages deployment is enabled and verified.
+
 The final verified release is `release_a74a4772ee3b0338a041`: 177 daily
 exchange observations become 9 monthly rows, while 306 daily weather
 observations become 10 monthly rows. All baseline measurements survived the
@@ -250,6 +257,31 @@ missing months missing, and bundles Plotly in the HTML for offline viewing. The
 real-data HTML and its CSV inputs stay under ignored `data/reports/` because CBK
 redistribution terms remain unresolved.
 
+### Public weather dashboard preview
+
+The dedicated [public dashboard](site/index.html) is a self-contained,
+weather-only view of `release_a74a4772ee3b0338a041`. It shows monthly mean
+temperature, monthly precipitation totals, location/month coverage and an exact
+value table for September–December 2023. Nairobi starts in September; Mombasa
+and Kisumu start in October, with their missing September values preserved as
+null rather than zero.
+
+![NASA POWER monthly weather charts and coverage detail](docs/assets/dashboard-weather.png)
+
+Open the checked-in preview directly:
+
+```powershell
+Start-Process "site\index.html"
+```
+
+Plotly is bundled locally, so viewing needs no CDN, API or credentials. NASA
+POWER values are gridded MERRA-2/GEOS-IT estimates at representative points,
+not station observations or city-wide measurements. Attribution, the applicable
+NASA Earthdata policy reference, regeneration instructions and the remaining
+manual GitHub Pages steps are in the
+[public dashboard guide](docs/public_dashboard.md). No hosted URL is claimed
+until that deployment is completed and checked.
+
 ## Documentation
 
 - [Source inventory](docs/source_inventory.md): provenance, terms, units,
@@ -264,6 +296,8 @@ redistribution terms remain unresolved.
   [Phase 4](docs/evidence/phase_4.md) evidence.
 - [Project overview](docs/project_overview.md) and
   [sprint closeout](docs/sprint_closeout.md).
+- [Public dashboard guide](docs/public_dashboard.md): source policy, local use,
+  regeneration and deferred GitHub Pages publication.
 
 ## Limitations and deferred work
 
