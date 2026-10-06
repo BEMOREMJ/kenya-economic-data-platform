@@ -20,6 +20,24 @@ Exchange covers 59 CBK publication dates for USD/GBP/EUR from 2023-10-02 to
 2023-12-29. Weather covers Nairobi from 2023-09-01 to 2023-12-31 (122 days) and
 Mombasa/Kisumu from 2023-10-01 to 2023-12-31 (92 days each).
 
+## Publication follow-up
+
+After acceptance, the repository was published at
+[BEMOREMJ/kenya-economic-data-platform](https://github.com/BEMOREMJ/kenya-economic-data-platform).
+Its first remote
+[offline CI run](https://github.com/BEMOREMJ/kenya-economic-data-platform/actions/runs/37473137469)
+passed. The manual
+[GitHub Pages deployment](https://github.com/BEMOREMJ/kenya-economic-data-platform/actions/runs/37474129917)
+also succeeded and serves the
+[interactive dashboard](https://bemoremj.github.io/kenya-economic-data-platform/).
+
+The public page is a historical weather reporting snapshot. It retains the
+verified NASA POWER attribution, September–December 2023 coverage and the
+gridded-estimate/representative-point limitations. Exchange processing remains
+part of this personal data engineering project, but CBK observations are not
+included in the public dashboard. These publication results supplement rather
+than replace the phase evidence and acceptance statuses below.
+
 ## Implemented capabilities
 
 - Pinned-source provenance, content-addressed artifacts, validation,
@@ -122,10 +140,14 @@ from message or file timestamps.
   all privileged manual changes.
 - The laptop is the operator and scheduler; availability is not guaranteed.
 - Floating aggregation requires the documented numeric tolerance.
-- GitHub Actions has passed only as a local command rehearsal; it has not run on
-  GitHub and has no cloud credentials.
+- At Phase 5 closeout, GitHub Actions had passed only as a local rehearsal.
+  After publication, the remote offline workflow passed; it still has no cloud
+  credentials and does not execute warehouse operations.
 
 ## Recommended next work
+
+This list records the recommendations at acceptance. Item 1 was subsequently
+completed by the publication follow-up above; the remaining items are unchanged.
 
 1. Create a public GitHub repository after an owner visibility review, add the
    remote, push `main`, and observe the first GitHub Actions run.

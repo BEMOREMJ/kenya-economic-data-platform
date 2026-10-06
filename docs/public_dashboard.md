@@ -5,6 +5,12 @@ from the trusted weather export for `release_a74a4772ee3b0338a041`. Its static
 publication boundary is [`site/`](../site/); screenshots and broader project
 documentation remain outside that directory.
 
+The verified deployment is the
+[interactive dashboard](https://bemoremj.github.io/kenya-economic-data-platform/)
+in the public
+[BEMOREMJ/kenya-economic-data-platform](https://github.com/BEMOREMJ/kenya-economic-data-platform)
+repository.
+
 ## Source policy and attribution
 
 The public snapshot follows the reuse finding recorded in the
@@ -36,24 +42,25 @@ The renderer opens only `weather_summary.csv` and
 page needs no CDN, API call, credential or local service. September remains
 null for Mombasa and Kisumu rather than being filled with zero.
 
-## Publish later with GitHub Pages
+## GitHub publication record
 
-The checked-in workflow `.github/workflows/pages.yml` is manual-only. Merely
-pushing it does not create a Pages deployment.
+The repository was published from `main`. The first remote
+[offline CI run](https://github.com/BEMOREMJ/kenya-economic-data-platform/actions/runs/37473137469)
+passed without cloud credentials. The manual
+[GitHub Pages run](https://github.com/BEMOREMJ/kenya-economic-data-platform/actions/runs/37474129917)
+then deployed only `site/` successfully.
 
-After this commit has been reviewed:
+The checked-in workflow `.github/workflows/pages.yml` remains manual-only. It
+uses the `github-pages` environment and only the permissions needed to read the
+repository, attest the deployment identity and write Pages. It does not run
+ingestion, access BigQuery or rebuild the pipeline.
 
-1. Push the reviewed commit to the repository's default branch.
-2. On GitHub, open **Settings → Pages** and select **GitHub Actions** as the
-   source. Do not select a branch directory: the workflow deliberately uploads
-   only `site/`.
-3. Open **Actions → Publish public dashboard to Pages → Run workflow**, select
-   the reviewed default branch, and confirm the run.
-4. Wait for the `github-pages` environment deployment to succeed, open the URL
-   shown by the deployment, and verify the two charts, coverage and exact-value
-   table at desktop and mobile widths.
-5. Add that verified URL to the README in a later commit. Until then, no hosted
-   dashboard URL is claimed.
+Post-deployment verification confirmed the historical release identifier, both
+Plotly charts, Nairobi September hover value `21.658`, coverage text and the
+exact-value content. Mombasa and Kisumu September remain null. The page renders
+without horizontal overflow at a 390-pixel mobile viewport as well as desktop
+width. Because the publication workflow is manually dispatched, ordinary
+documentation commits do not redeploy the unchanged `site/` directory.
 
 This follows GitHub's documented custom-workflow pattern: configure Pages,
 upload a Pages artifact from the chosen directory, and deploy that artifact.

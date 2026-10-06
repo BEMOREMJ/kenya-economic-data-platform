@@ -6,12 +6,14 @@ BigQuery with dbt, and publishes reproducible reporting outputs. It implements
 reliable ingestion, raw preservation, warehouse modelling, validation,
 orchestration, scoped backfills, recovery, and local reporting.
 
-![Weather-only historical reporting dashboard overview](docs/assets/dashboard-overview.png)
+[**Open interactive dashboard →**](https://bemoremj.github.io/kenya-economic-data-platform/)
+
+[![Weather-only historical reporting dashboard overview](docs/assets/dashboard-overview.png)](https://bemoremj.github.io/kenya-economic-data-platform/)
 
 The image is a historical reporting snapshot from the verified release. The
 public preview intentionally shows only NASA POWER weather results; the platform
-also implements a separate exchange-rate pipeline. A hosted dashboard link will
-be added only after GitHub Pages deployment is enabled and verified.
+also implements a separate exchange-rate pipeline. The linked GitHub Pages
+deployment has been verified at desktop and mobile widths.
 
 The final verified release is `release_a74a4772ee3b0338a041`: 177 daily
 exchange observations become 9 monthly rows, while 306 daily weather
@@ -278,9 +280,9 @@ Plotly is bundled locally, so viewing needs no CDN, API or credentials. NASA
 POWER values are gridded MERRA-2/GEOS-IT estimates at representative points,
 not station observations or city-wide measurements. Attribution, the applicable
 NASA Earthdata policy reference, regeneration instructions and the remaining
-manual GitHub Pages steps are in the
-[public dashboard guide](docs/public_dashboard.md). No hosted URL is claimed
-until that deployment is completed and checked.
+publication record are in the [public dashboard guide](docs/public_dashboard.md).
+The verified hosted copy is available at the
+[interactive dashboard](https://bemoremj.github.io/kenya-economic-data-platform/).
 
 ## Documentation
 
