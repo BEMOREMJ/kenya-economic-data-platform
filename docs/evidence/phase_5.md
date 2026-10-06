@@ -44,12 +44,14 @@ execution, and prior verified releases.
 
 ## Documentation review
 
-The README now leads with the portfolio purpose, architecture, final verified
+The README now leads with the project purpose, architecture, final verified
 release/counts, prerequisites, frozen Windows setup, ADC handling, explicit
 project/location variables, zero-billing constraint, actual CLI commands,
 pinned full-file CBK workflow, verified coverage, and limitations. The source
-inventory, data dictionary, warehouse lineage/formulas, runbook, portfolio case
-study, resume bullets, and sprint closeout describe the current implementation.
+inventory, data dictionary, warehouse lineage/formulas, runbook, project
+overview, and sprint closeout describe the current implementation. Application-
+specific writing drafted during Phase 5 was removed from the tracked public set
+during the subsequent prepublication presentation review.
 
 The docs explicitly distinguish application-enforced release immutability from
 protection against every possible manual change by a privileged BigQuery
@@ -87,4 +89,36 @@ The workflow commands passed in the clean local rehearsal. GitHub Actions has
 not run because no remote repository exists and nothing has been pushed. The
 workflow has no cloud credentials and performs compile, offline tests, and dbt
 parse only.
+
+## Prepublication presentation update
+
+Recorded 2026-10-06 without cloud access, new source retrieval, pipeline rerun,
+or GitHub publication. Before this update the repository had trusted CSV
+summaries, metadata, pipeline health, and dbt lineage documentation, but no
+reporting-results visualization.
+
+Public wording now describes a personal data engineering project through its
+implemented tasks. The tracked case study became `docs/project_overview.md`,
+and application-specific writing was removed from the public set. Technical
+limitations, source attribution, licence findings, and acceptance outcomes were
+preserved.
+
+The new `render-dashboard` command reads only the two trusted summary CSVs and
+metadata for one release. The normal export path invokes the same renderer. It
+refuses missing or mismatched release identities, mismatched coverage, invalid
+domains, and duplicate reporting keys. Plotly 7.1.0 is locked and bundled into
+the standalone HTML; the document contains no external script or stylesheet
+reference.
+
+The real ignored dashboard was generated for
+`release_a74a4772ee3b0338a041`. It derived 177 exchange and 306 weather
+observations from the exported monthly count fields, with 9 and 10 report rows.
+Only Nairobi has a September row; Mombasa and Kisumu encode September as null
+and begin in October. Two unchanged generations produced byte-identical SHA-256
+`b2662439ba609513fea311da68a816e939f1acf04eaf2a4582600b912a3d070f`.
+
+A local headless-browser render confirmed readable labels, charts, exact-value
+tables, restrained axes, coverage text, and the separate exchange/weather
+presentation. The real HTML and temporary screenshot were not staged. Final
+offline verification passed Python compilation and all 27 tests.
 

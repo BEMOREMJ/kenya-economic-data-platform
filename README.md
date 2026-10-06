@@ -1,10 +1,10 @@
 # Kenya Economic Data Platform
 
-This personal portfolio project implements a small, auditable data platform for
-historical Kenyan economic analysis. Python validates bounded Central Bank of
-Kenya (CBK) exchange-rate and NASA POWER weather inputs; BigQuery Sandbox holds
-candidate models; dbt applies critical quality gates; and the local orchestrator
-publishes only a validated, frozen release through one canonical view.
+Kenya Economic Data Platform is a personal data engineering project that
+ingests historical exchange-rate and weather data, validates and models it in
+BigQuery with dbt, and publishes reproducible reporting outputs. It implements
+reliable ingestion, raw preservation, warehouse modelling, validation,
+orchestration, scoped backfills, recovery, and local reporting.
 
 The final verified release is `release_a74a4772ee3b0338a041`: 177 daily
 exchange observations become 9 monthly rows, while 306 daily weather
@@ -13,9 +13,8 @@ demonstrated Nairobi September backfill unchanged. A live, isolated missing-day
 fault made dbt fail and publication stop; the trusted report stayed unchanged,
 and a clean recovery subsequently passed.
 
-> This is a personal, laptop-operated portfolio system, not an employer or
-> production deployment. It has no cloud scheduler, uptime commitment,
-> streaming ingestion, incremental dbt models, or billing-enabled resources.
+The project runs from a laptop and has no cloud scheduler, uptime commitment,
+streaming ingestion, incremental dbt models, or billing-enabled resources.
 
 ## Architecture
 
@@ -233,6 +232,24 @@ release and does not rebuild the warehouse. Failure, rerun, scoped backfill,
 rollback, export retry, and expiration procedures are in the
 [`operator runbook`](docs/operator_runbook.md).
 
+### Local results dashboard
+
+The trusted CSV exports can be rendered without extraction, warehouse access,
+rebuilding, or publication:
+
+```powershell
+$ReleaseId = "release_a74a4772ee3b0338a041"
+uv run python -m kenya_economic_data render-dashboard `
+  --report-dir "data\reports\$ReleaseId"
+Start-Process "data\reports\$ReleaseId\results_dashboard.html"
+```
+
+The renderer requires matching exchange and weather release identities. It
+derives counts and coverage from the trusted exports and their metadata, keeps
+missing months missing, and bundles Plotly in the HTML for offline viewing. The
+real-data HTML and its CSV inputs stay under ignored `data/reports/` because CBK
+redistribution terms remain unresolved.
+
 ## Documentation
 
 - [Source inventory](docs/source_inventory.md): provenance, terms, units,
@@ -245,7 +262,7 @@ rollback, export retry, and expiration procedures are in the
 - [Phase 1](docs/evidence/phase_1.md), [Phase 2](docs/evidence/phase_2.md),
   [Phase 3](docs/evidence/phase_3.md), and
   [Phase 4](docs/evidence/phase_4.md) evidence.
-- [Portfolio case study](docs/portfolio_case_study.md) and
+- [Project overview](docs/project_overview.md) and
   [sprint closeout](docs/sprint_closeout.md).
 
 ## Limitations and deferred work

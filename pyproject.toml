@@ -1,12 +1,13 @@
 [project]
 name = "kenya-economic-data-platform"
 version = "0.1.0"
-description = "Bounded local extraction foundation for a Kenya economic data platform."
+description = "Personal data engineering project for verified Kenya exchange-rate and weather reporting."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "dbt-bigquery==1.12.1",
     "dbt-core==1.12.5",
+    "plotly==7.1.0",
 ]
 
 [project.scripts]

@@ -138,12 +138,12 @@ from message or file timestamps.
 5. Consider managed scheduling/monitoring only after defining freshness,
    ownership, cost controls, and an updated-source contract.
 
-## Handoff summary
+## Project summary
 
-This project demonstrates hands-on Python, SQL, BigQuery, and dbt data
-engineering on a deliberately small but rigorously verified scope. It turns 483
+This personal data engineering project uses Python, SQL, BigQuery, and dbt on a
+deliberately small but rigorously verified scope. It turns 483
 final daily historical observations into 19 monthly report rows, preserves
 source and batch lineage, blocks publication on critical data-quality failure,
 supports deterministic reruns and scoped backfills, and documents recovery and
-Sandbox-expiration limits without claiming production scale or business impact.
+Sandbox-expiration limits.
 

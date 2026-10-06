@@ -9,6 +9,7 @@ from datetime import date
 from pathlib import Path
 
 from .config import Settings, load_settings
+from .dashboard import generate_results_dashboard
 from .backfill import compose_backfill
 from .manifest import Manifest
 from .orchestration import export_release_reports, health_report, operate, rollback_release
@@ -71,12 +72,27 @@ def build_parser() -> argparse.ArgumentParser:
     retry_export.add_argument("--trusted-dataset", required=True)
     retry_export.add_argument("--release-id")
     retry_export.add_argument("--config", type=Path, default=Path("config/settings.example.toml"))
+    dashboard = subparsers.add_parser(
+        "render-dashboard", help="render an offline dashboard from trusted exports"
+    )
+    dashboard.add_argument(
+        "--report-dir", type=Path, required=True,
+        help="release directory containing both trusted CSV exports and metadata",
+    )
+    dashboard.add_argument(
+        "--output", type=Path,
+        help="optional HTML destination; defaults inside the report directory",
+    )
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.command == "render-dashboard":
+            result = generate_results_dashboard(args.report_dir, output_path=args.output)
+            print(json.dumps(result, indent=2, sort_keys=True))
+            return 0
         settings = load_settings(args.config)
         if args.command == "load":
             return _load(args, settings)

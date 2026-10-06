@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import Settings
+from .dashboard import generate_results_dashboard
 from .io_utils import (
     atomic_replace_json,
     atomic_write_json_once,
@@ -675,6 +676,13 @@ def export_release_reports(
             "job_id": result.job_id, "bytes_processed": result.bytes_processed,
             "bytes_billed": result.bytes_billed,
         }
+    dashboard = generate_results_dashboard(output_dir)
+    dashboard_path = Path(dashboard["path"])
+    manifest.record_export(
+        release_id, "dashboard", dashboard_path,
+        status="completed", sha256=dashboard["sha256"],
+    )
+    evidence["dashboard"] = dashboard
     return evidence
 
 

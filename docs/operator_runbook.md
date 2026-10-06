@@ -59,7 +59,22 @@ include `never_published` and `expired_requires_reconstruction`.
 
 An export failure after publication does not undo the warehouse switch. Retry
 only the exports with `retry-export`; it does not extract, load, build, freeze,
-or republish.
+or republish. Successful export also regenerates the ignored standalone results
+dashboard from the two trusted domain summaries.
+
+Regenerate or open the dashboard without cloud access:
+
+```powershell
+$ReleaseId = "release_a74a4772ee3b0338a041"
+uv run python -m kenya_economic_data render-dashboard `
+  --report-dir "data\reports\$ReleaseId"
+Start-Process "data\reports\$ReleaseId\results_dashboard.html"
+```
+
+The renderer reads only `exchange_summary.csv`, `weather_summary.csv`, and their
+metadata in the selected release directory. It refuses mismatched release IDs,
+domains, coverage metadata, or duplicate reporting keys. It never reads raw,
+candidate, or fault-injected data.
 
 ## Scoped backfill composition
 
